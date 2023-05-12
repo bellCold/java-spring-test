@@ -4,6 +4,7 @@ package com.example.javaspringtest.domain.member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +21,7 @@ public class Member {
 
     private String phone;
 
+    @Builder
     public Member(Long id, String name, String phone) {
         this.id = id;
         this.name = name;

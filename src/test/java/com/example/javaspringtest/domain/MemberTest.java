@@ -1,26 +1,33 @@
 package com.example.javaspringtest.domain;
 
+import com.example.javaspringtest.api.request.MemberRequestDto;
+import com.example.javaspringtest.domain.member.JpaMemberRepository;
 import com.example.javaspringtest.domain.member.Member;
-import com.example.javaspringtest.domain.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestConstructor;
+
+import static com.example.javaspringtest.api.MemberMapper.MAPPER;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class MemberTest {
 
-    private final MemberRepository memberRepository;
+    private final JpaMemberRepository memberRepository;
 
-    private MemberTest(MemberRepository memberRepository) {
+    MemberTest(JpaMemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
 
     @Test
     void createMember() {
-        Member member = new Member(1L, "queryDsa", "010");
+        MemberRequestDto requestDto = new MemberRequestDto(3L, "bellCold", "010-1234-1234");
+        Member member = MAPPER.toEntity(requestDto);
         memberRepository.save(member);
-        Member findMember = memberRepository.findId(1L);
-        System.out.println("findMember = " + findMember.getName());
+
+        Member findMember = memberRepository.findById(3L).orElseThrow(RuntimeException::new);
+
+        assertThat(findMember.getName()).isEqualTo("bellCold");
     }
 }

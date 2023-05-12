@@ -14,7 +14,6 @@ public class MemoryMemberRepository implements MemberRepository {
 
     @Override
     public void update(Member member) {
-        repository.remove(member.getId());
         repository.put(member.getId(), member);
     }
 
